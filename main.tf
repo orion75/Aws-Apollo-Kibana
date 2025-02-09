@@ -30,6 +30,13 @@ resource "aws_security_group" "sg_application" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  ingress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["172.31.16.0/20"]
+  }
   egress {
     from_port   = 0
     to_port     = 0
@@ -54,7 +61,7 @@ resource "aws_instance" "ec2_es00" {
 
 resource "aws_instance" "ec2_es01" {
   ami             = "ami-064519b8c76274859"
-  instance_type   = "t2.micro"
+  instance_type   = "t2.small"
   subnet_id       = "subnet-0100cfab5d482fc8e"
   security_groups = [aws_security_group.sg_application.id]
   key_name        = "ApolloKibana"
@@ -65,7 +72,7 @@ resource "aws_instance" "ec2_es01" {
 
 resource "aws_instance" "ec2_es02" {
   ami             = "ami-064519b8c76274859"
-  instance_type   = "t2.micro"
+  instance_type   = "t2.small"
   subnet_id       = "subnet-0100cfab5d482fc8e"
   security_groups = [aws_security_group.sg_application.id]
   key_name        = "ApolloKibana"
@@ -76,7 +83,7 @@ resource "aws_instance" "ec2_es02" {
 
 resource "aws_instance" "ec2_kibana" {
   ami             = "ami-064519b8c76274859"
-  instance_type   = "t2.micro"
+  instance_type   = "t2.small"
   subnet_id       = "subnet-0100cfab5d482fc8e"
   security_groups = [aws_security_group.sg_application.id]
   key_name        = "ApolloKibana"

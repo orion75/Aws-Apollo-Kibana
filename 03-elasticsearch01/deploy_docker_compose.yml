@@ -1,6 +1,6 @@
 ---
 - name: Desplegar Docker Compose en Servidor Remoto
-  hosts: ec2_es00  
+  hosts: ec2_es01 
   become: true  # Ejecutar como root
 
   tasks:
@@ -10,9 +10,9 @@
         state: directory
         mode: '0755'
 
-    - name: Crear directorio de certificados
+    - name: Crear directorio esdata01
       file:
-        path: /opt/app/certs
+        path: /opt/app/esdata01
         state: directory
         mode: '0755'
 
@@ -28,25 +28,21 @@
         dest: /opt/app/.env
         mode: '0644'
 
+    - name: Copiar archivo certs.tar.gz al servidor
+      copy:
+        src: ../certs_backup/certs.tar.gz
+        dest: /opt/app/certs.tar.gz
+        mode: '0644'
+
+    - name: Descomprimir el archivo en el servidor
+      ansible.builtin.unarchive:
+        src: /opt/app/certs.tar.gz
+        dest: /opt/app/
+        remote_src: yes  # Indica que el archivo ya está en el servidor
+
     - name: Levantar el servicio con Docker Compose
       shell: |
         cd /opt/app
         docker compose up -d
       args:
         executable: /bin/bash
-
-    - name: Esperar a que los certificados se generen (si es necesario)
-      pause:
-        seconds: 30  # Ajusta el tiempo según cuánto tarde la generación
-
-    - name: Comprimir la carpeta de certificados
-      archive:
-        path: /opt/app/certs
-        dest: /opt/app/certs.tar.gz
-        format: gz
-
-    - name: Descargar el archivo comprimido de certificados
-      fetch:
-        src: "/opt/app/certs.tar.gz"
-        dest: "../certs_backup/certs.tar.gz"
-        flat: yes
