@@ -63,6 +63,19 @@
       debug:
         msg: "{{ docker_version_output.stdout }}"
 
+    - name: Configurar `vm.max_map_count` temporalmente
+      command: sysctl -w vm.max_map_count=262144
+      changed_when: false
+
+    - name: Hacer persistente `vm.max_map_count`
+      lineinfile:
+        path: /etc/sysctl.conf
+        line: "vm.max_map_count=262144"
+        state: present
+
+    - name: Aplicar cambios en `sysctl`
+      command: sysctl -p
+    
     - name: Reiniciar la máquina
       reboot:
         msg: "Reiniciando la máquina después de la actualización e instalación de Docker"

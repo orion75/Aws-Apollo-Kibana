@@ -36,7 +36,6 @@ resource "aws_security_group" "sg_application" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-
   ingress {
     from_port   = 0
     to_port     = 0
@@ -56,7 +55,7 @@ resource "aws_security_group" "sg_application" {
 
 resource "aws_instance" "ec2_elastics" {
   ami             = "ami-064519b8c76274859"
-  instance_type   = "t2.micro"
+  instance_type   = "t2.medium"
   subnet_id       = "subnet-0100cfab5d482fc8e"
   security_groups = [aws_security_group.sg_application.id]
   key_name        = "ApolloKibana"
@@ -76,55 +75,16 @@ resource "aws_instance" "ec2_apollo" {
   }
 }
 
-resource "aws_instance" "ec2_es02" {
-  ami             = "ami-064519b8c76274859"
-  instance_type   = "t2.small"
-  subnet_id       = "subnet-0100cfab5d482fc8e"
-  security_groups = [aws_security_group.sg_application.id]
-  key_name        = "ApolloKibana"
-  tags = {
-    Name = "Es02"
-  }
-}
-
-resource "aws_instance" "ec2_kibana" {
-  ami             = "ami-064519b8c76274859"
-  instance_type   = "t2.small"
-  subnet_id       = "subnet-0100cfab5d482fc8e"
-  security_groups = [aws_security_group.sg_application.id]
-  key_name        = "ApolloKibana"
-  tags = {
-    Name = "Kibana"
-  }
-}
-
-resource "aws_instance" "ec2_apollo" {
-  ami             = "ami-064519b8c76274859"
-  instance_type   = "t2.micro"
-  subnet_id       = "subnet-0100cfab5d482fc8e"
-  security_groups = [aws_security_group.sg_application.id]
-  key_name        = "ApolloKibana"
-  tags = {
-    Name = "Apollo"
-  }
-}
-
 output "public_ips" {
   value = [
-    aws_instance.ec2_es00.public_ip,
-    aws_instance.ec2_es01.public_ip,
-    aws_instance.ec2_es02.public_ip,
-    aws_instance.ec2_kibana.public_ip,
+    aws_instance.ec2_elastics.public_ip,
     aws_instance.ec2_apollo.public_ip,
   ]
 }
 
 output "private_ips" {
   value = [
-    aws_instance.ec2_es00.private_ip,
-    aws_instance.ec2_es01.private_ip,
-    aws_instance.ec2_es02.private_ip,
-    aws_instance.ec2_kibana.private_ip,
+    aws_instance.ec2_elastics.private_ip,
     aws_instance.ec2_apollo.private_ip,
   ]
 }

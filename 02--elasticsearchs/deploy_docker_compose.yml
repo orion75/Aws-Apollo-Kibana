@@ -1,0 +1,50 @@
+---
+- name: Desplegar Docker Compose en Servidor Remoto
+  hosts: ec2_elastics 
+  become: true
+
+  tasks:
+    - name: Crear directorio de la aplicación en el servidor
+      file:
+        path: /opt/app
+        state: directory
+        mode: '0755'
+
+    - name: Copiar archivo docker-compose.yml al servidor
+      copy:
+        src: ./docker-compose.yml
+        dest: /opt/app/docker-compose.yml
+        mode: '0644'
+
+    - name: Copiar archivo .env al servidor
+      copy:
+        src: ./env
+        dest: /opt/app/.env
+        mode: '0644'
+
+    - name: Copiar archivo apm.script al servidor
+      copy:
+        src: ./env
+        dest: /opt/app/.env
+        mode: '0644'
+
+    - name: Levantar el servicio con Docker Compose
+      shell: |
+        cd /opt/app
+        docker compose up -d
+      args:
+        executable: /bin/bash
+
+    - name: Copiar el script al servidor
+      copy:
+        src: ./apm.sh  # Ruta local del script
+        dest: /tmp/apm.sh  # Ruta en el servidor
+        mode: '0755'
+
+    - name: Ejecutar el script en el servidor
+      command: /tmp/apm.sh
+      register: script_output
+
+    - name: Mostrar la salida del script
+      debug:
+        msg: "{{ script_output.stdout }}"
