@@ -19,6 +19,12 @@ resource "aws_security_group" "sg_application" {
     cidr_blocks = ["0.0.0.0/0"]
   }
   ingress {
+    from_port   = 9300
+    to_port     = 9300
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
     from_port   = 5601
     to_port     = 5601
     protocol    = "tcp"
@@ -48,7 +54,7 @@ resource "aws_security_group" "sg_application" {
   }
 }
 
-resource "aws_instance" "ec2_es00" {
+resource "aws_instance" "ec2_elastics" {
   ami             = "ami-064519b8c76274859"
   instance_type   = "t2.micro"
   subnet_id       = "subnet-0100cfab5d482fc8e"
@@ -59,7 +65,7 @@ resource "aws_instance" "ec2_es00" {
   }
 }
 
-resource "aws_instance" "ec2_es01" {
+resource "aws_instance" "ec2_apollo" {
   ami             = "ami-064519b8c76274859"
   instance_type   = "t2.small"
   subnet_id       = "subnet-0100cfab5d482fc8e"
