@@ -16,52 +16,54 @@
           - curl
           - gnupg
           - lsb-release
+          - docker
+          - docker-compose-v2
         state: present
 
-    - name: Agregar clave GPG de Docker
-      shell: |
-        curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-      args:
-        creates: /usr/share/keyrings/docker-archive-keyring.gpg
+    # - name: Agregar clave GPG de Docker
+    #   shell: |
+    #     curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+    #   args:
+    #     creates: /usr/share/keyrings/docker-archive-keyring.gpg
 
-    - name: Agregar repositorio oficial de Docker
-      shell: |
-        echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-      args:
-        creates: /etc/apt/sources.list.d/docker.list
+    # - name: Agregar repositorio oficial de Docker
+    #   shell: |
+    #     echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+    #   args:
+    #     creates: /etc/apt/sources.list.d/docker.list
 
-    - name: Actualizar el caché de paquetes después de agregar el repositorio
-      apt:
-        update_cache: yes
+    # - name: Actualizar el caché de paquetes después de agregar el repositorio
+    #   apt:
+    #     update_cache: yes
 
-    - name: Instalar Docker y sus dependencias
-      apt:
-        name:
-          - docker-ce
-          - docker-ce-cli
-          - containerd.io
-        state: present
+    # - name: Instalar Docker y sus dependencias
+    #   apt:
+    #     name:
+    #       - docker-ce
+    #       - docker-ce-cli
+    #       - containerd.io
+    #     state: present
 
-    - name: Agregar usuario actual al grupo docker
-      user:
-        name: "{{ ansible_user }}"
-        groups: docker
-        append: yes
+    # - name: Agregar usuario actual al grupo docker
+    #   user:
+    #     name: "{{ ansible_user }}"
+    #     groups: docker
+    #     append: yes
 
-    - name: Habilitar y arrancar el servicio Docker
-      systemd:
-        name: docker
-        enabled: yes
-        state: started
+    # - name: Habilitar y arrancar el servicio Docker
+    #   systemd:
+    #     name: docker
+    #     enabled: yes
+    #     state: started
 
-    - name: Verificar la instalación de Docker
-      command: docker --version
-      register: docker_version_output
-      changed_when: false
+    # - name: Verificar la instalación de Docker
+    #   command: docker --version
+    #   register: docker_version_output
+    #   changed_when: false
 
-    - name: Mostrar la versión de Docker instalada
-      debug:
-        msg: "{{ docker_version_output.stdout }}"
+    # - name: Mostrar la versión de Docker instalada
+    #   debug:
+    #     msg: "{{ docker_version_output.stdout }}"
 
     - name: Configurar `vm.max_map_count` temporalmente
       command: sysctl -w vm.max_map_count=262144

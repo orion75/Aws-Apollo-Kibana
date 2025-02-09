@@ -54,7 +54,7 @@ resource "aws_security_group" "sg_application" {
 }
 
 resource "aws_instance" "ec2_elastics" {
-  ami             = "ami-064519b8c76274859"
+  ami             = "ami-0e1bed4f06a3b463d"
   instance_type   = "t2.medium"
   subnet_id       = "subnet-0100cfab5d482fc8e"
   security_groups = [aws_security_group.sg_application.id]
@@ -65,7 +65,7 @@ resource "aws_instance" "ec2_elastics" {
 }
 
 resource "aws_instance" "ec2_apollo" {
-  ami             = "ami-064519b8c76274859"
+  ami             = "ami-0e1bed4f06a3b463d"
   instance_type   = "t2.small"
   subnet_id       = "subnet-0100cfab5d482fc8e"
   security_groups = [aws_security_group.sg_application.id]

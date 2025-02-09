@@ -1,0 +1,24 @@
+# Password para el usuario 'elastic'
+ELASTIC_PASSWORD=elasticunir2024
+
+# Password para el usuario 'kibana_system'
+KIBANA_PASSWORD=kibanaunir2024
+
+# Versión del Elastic stack
+STACK_VERSION=8.12.0
+
+# Nombre para el clúster
+CLUSTER_NAME=docker-cluster
+
+# Licencia, básica o trial
+LICENSE=basic
+#LICENSE=trial
+
+# Puerto para exponer la API de Elasticsearch
+ES_PORT=9200
+
+# Puerto para Kibana
+KIBANA_PORT=5601
+
+# Límite de memoria por nodo, 1GiB
+MEM_LIMIT=1073741824
