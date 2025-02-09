@@ -26,18 +26,12 @@ services:
           "  - name: es01\n"\
           "    dns:\n"\
           "      - es01\n"\
-          "      - localhost\n"\
-          "      - ec2-52-91-50-28.compute-1.amazonaws.com\n"\
           "    ip:\n"\
-          "      - 52.91.50.28\n"\
           "      - 172.31.28.22\n"\
           "  - name: es02\n"\
           "    dns:\n"\
           "      - es02\n"\
-          "      - localhost\n"\
-          "      - ec2-54-83-78-208.compute-1.amazonaws.com\n"\
           "    ip:\n"\
-          "      - 54.83.78.208\n"\
           "      - 172.31.31.186\n"\
           > config/certs/instances.yml;
           bin/elasticsearch-certutil cert --silent --pem -out config/certs/certs.zip --in config/certs/instances.yml --ca-cert config/certs/ca/ca.crt --ca-key config/certs/ca/ca.key;
